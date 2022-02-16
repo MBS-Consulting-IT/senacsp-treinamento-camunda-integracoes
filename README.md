@@ -3,10 +3,15 @@
 
 <br>
 
+#### Como subir o JSON Server
+```bash
+npx json-server --watch db/api.json --delay 3000
+```
+
 ### Exercício 1
 - [ ] Tornar o processo de exemplo executável no Camunda
 - [ ] Configurar gateways de decisão
-- [ ] Criar campos boleanos para aprovações
+- [ ] Criar campos booleanos para aprovações
 - [ ] Criar campos para definição das datas dos timers
 - [ ] Configurar timers
 
