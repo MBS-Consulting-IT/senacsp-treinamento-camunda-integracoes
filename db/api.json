@@ -1,0 +1,45 @@
+{
+	"services": [
+		"Camunda BPM",
+		"SCCD",
+		"EPM",
+		"Automation Anywhere",
+		"Planner",
+		"Trello"
+	],
+  "tickets": [
+
+  ],
+  "preproducao": [
+
+  ],
+	"epm": [
+		{
+			"id": 1,
+			"name": "Migração de Ambientes",
+			"start": "12/03/2022"
+		},
+		{
+			"id": 2,
+			"name": "Regularização de Materiais",
+			"start": "20/04/2022"
+		}
+	],
+	"auth": [
+		{
+			"id": 1,
+			"token": "fd39240baa8e0695cb0770a249a460b0d4e99da53a00a727b24a269cd16456ae",
+			"group": 4
+		},
+		{
+			"id": 2,
+			"token": "fd39240baa8e0695cb0770a249a460b0d4e99da53a00a727b24a269cd16456ae",
+			"group": 7
+		},
+		{
+			"id": 3,
+			"token": "fd39240baa8e0695cb0770a249a460b0d4e99da53a00a727b24a269cd16456ae",
+			"group": 3
+		}
+	]
+}
