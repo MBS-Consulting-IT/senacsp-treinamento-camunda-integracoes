@@ -27,19 +27,38 @@ async function dataToVariables (data) {
       observacoes: {
         type: 'string',
         value: data.observacoes
+      },
+      documentoHistorias: {
+        type: 'file',
+        value: await encodeBase64(data.documentoHistorias),
+        valueInfo: {
+          filename: data.documentoHistorias.name,
+          mimetype: data.documentoHistorias.type || 'application/octet-stream',
+          encoding: 'utf-8'
+        }
+      },
+      sistemas: {
+        type: 'object',
+        value: JSON.stringify(data.sistemas),
+        valueInfo: {
+          serializationDataFormat: 'application/json',
+          objectTypeName: 'java.util.ArrayList'
+        }
       }
-      // documentoHistorias: {
-      //   type: 'string',
-      //   value: data.documentoHistorias
-      // },
-      // sistemas: {
-      //   type: 'object',
-      //   value: data.sistemas,
-      //   valueInfo: {
-      //     serializationDataFormat: 'application/json',
-      //     objectTypeName: 'java.util.ArrayList'
-      //   }
-      // }
     }
+  })
+}
+
+function encodeBase64 (file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(
+      reader.result
+        .toString()
+        .replace(/^data:(.*,)?/, '')
+    )
+    reader.onerror = error => reject(error)
   })
 }
