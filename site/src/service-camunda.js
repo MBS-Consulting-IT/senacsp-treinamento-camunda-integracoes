@@ -1,15 +1,16 @@
 const CAMUNDA_API_URL = 'http://localhost:8080/engine-rest'
-const CAMUNDA_FLOW_KEY = '{key}'
+const CAMUNDA_FLOW_KEY = 'desenvolvimentoRpa'
 const CAMUNDA_API_START_INSTANCE = `${CAMUNDA_API_URL}/process-definition/key/${CAMUNDA_FLOW_KEY}/start`
 
 export async function CamundaApiStartProject (data) {
-  return fakeFeatch(CAMUNDA_API_START_INSTANCE, data)
-}
-
-function fakeFeatch(url, data) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(data), 500)
+  return fetch(CAMUNDA_API_START_INSTANCE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: await dataToVariables(data)
   })
+    .then(response => response.json())
 }
 
 async function dataToVariables (data) {
