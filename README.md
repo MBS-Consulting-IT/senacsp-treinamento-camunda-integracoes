@@ -5,7 +5,7 @@
 
 #### Como subir o JSON Server
 ```bash
-npx json-server --watch db/api.json --delay 3000
+npx json-server --watch db/api.json --delay 1000
 ```
 
 ### Exercício 1
@@ -32,3 +32,5 @@ npx json-server --watch db/api.json --delay 3000
 - [ ] Popular lista de itens utilizando fetch e AngularJS interagindo com life cycle hooks
 - [ ] Implementar nova tarefa de serviço para etapa de aprovação da migração
 
+### Exercício 5
+...
