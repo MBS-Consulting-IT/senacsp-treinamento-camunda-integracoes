@@ -1,0 +1,32 @@
+{
+  "name": "treinamento-integracoes",
+  "version": "1.0.0",
+  "description": "exercicios do treinamento técnico de integrações",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm-run-all -p start:*",
+    "start:worker": "node workers/migracao.js",
+    "start:api": "json-server --watch db/api.json --delay 1000",
+    "start:app": "serve site -p 1234 -n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MBS-Consulting-IT/senacsp-treinamento-camunda-integracoes.git"
+  },
+  "keywords": [],
+  "author": "MBS Consulting",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MBS-Consulting-IT/senacsp-treinamento-camunda-integracoes/issues"
+  },
+  "homepage": "https://github.com/MBS-Consulting-IT/senacsp-treinamento-camunda-integracoes#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "camunda-external-task-client-js": "^2.1.1"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.0",
+    "npm-run-all": "^4.1.5",
+    "serve": "^13.0.2"
+  }
+}
