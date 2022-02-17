@@ -205,7 +205,7 @@
       <bpmn:outgoing>Flow_17lhmot</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_0y79n71" sourceRef="Activity_05xsx2h" targetRef="Gateway_09wsgue" />
-    <bpmn:scriptTask id="Activity_05xsx2h" name="Calcular Data de Notificações">
+    <bpmn:scriptTask id="Activity_05xsx2h" name="Calcular Data de Notificações" scriptFormat="javascript" camunda:resource="deployment://calcular-data-notificacoes.js">
       <bpmn:incoming>Flow_0z9goqq</bpmn:incoming>
       <bpmn:outgoing>Flow_0y79n71</bpmn:outgoing>
     </bpmn:scriptTask>
@@ -216,12 +216,16 @@
     <bpmn:intermediateCatchEvent id="Event_1sbzp8j" name="5 dias antes da data agendada">
       <bpmn:incoming>Flow_1al5b2t</bpmn:incoming>
       <bpmn:outgoing>Flow_0edkxw2</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_0agxwuf" />
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0agxwuf">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${notificacaoAlinhamento}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:intermediateCatchEvent id="Event_0orjbaq" name="5 dias antes da data agendada">
       <bpmn:incoming>Flow_0sqz7m0</bpmn:incoming>
       <bpmn:outgoing>Flow_1l1mv6x</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_1n3fm2a" />
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1n3fm2a">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${notificacaoPassagemConhecimento}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:parallelGateway id="Gateway_0y9hbud">
       <bpmn:incoming>Flow_02xkdi6</bpmn:incoming>
@@ -252,6 +256,31 @@
       <bpmn:outgoing>Flow_0m2xk1s</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:serviceTask id="Activity_1wssgoq" name="Solicitar Liberação de Acessos">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="content-type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="url">http://localhost:3000/tickets</camunda:inputParameter>
+            <camunda:inputParameter name="payload">
+              <camunda:script scriptFormat="javascript">const content = {
+  "sistema" : "MS Planner",
+  "solicitante": "William"
+}
+
+JSON.stringify(content)</camunda:script>
+            </camunda:inputParameter>
+            <camunda:outputParameter name="response">
+              <camunda:script scriptFormat="javascript">response</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1iqr3vc</bpmn:incoming>
       <bpmn:outgoing>Flow_1vowt2l</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -259,14 +288,21 @@
     <bpmn:intermediateCatchEvent id="Event_0066h16" name="Acessos Liberados">
       <bpmn:incoming>Flow_1vowt2l</bpmn:incoming>
       <bpmn:outgoing>Flow_010tcks</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0uwbjwb" messageRef="Message_1em5bc8" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0uwbjwb" messageRef="Message_0rz97kf" />
     </bpmn:intermediateCatchEvent>
   </bpmn:process>
   <bpmn:message id="Message_1em5bc8" />
+  <bpmn:message id="Message_0rz97kf" name="ACESSO_LIBERADO" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1pk3sqp">
       <bpmndi:BPMNShape id="Participant_1jf7xfb_di" bpmnElement="Participant_1jf7xfb" isHorizontal="true">
         <dc:Bounds x="130" y="80" width="3610" height="890" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1v41e8z_di" bpmnElement="Lane_1v41e8z" isHorizontal="true">
+        <dc:Bounds x="160" y="670" width="3580" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0qosw94_di" bpmnElement="Lane_0qosw94" isHorizontal="true">
+        <dc:Bounds x="160" y="830" width="3580" height="140" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_12va7lu_di" bpmnElement="Lane_12va7lu" isHorizontal="true">
         <dc:Bounds x="160" y="460" width="3580" height="210" />
@@ -274,12 +310,30 @@
       <bpmndi:BPMNShape id="Lane_01839it_di" bpmnElement="Lane_01839it" isHorizontal="true">
         <dc:Bounds x="160" y="80" width="3580" height="380" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_0qosw94_di" bpmnElement="Lane_0qosw94" isHorizontal="true">
-        <dc:Bounds x="160" y="830" width="3580" height="140" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Lane_1v41e8z_di" bpmnElement="Lane_1v41e8z" isHorizontal="true">
-        <dc:Bounds x="160" y="670" width="3580" height="160" />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_010tcks_di" bpmnElement="Flow_010tcks">
+        <di:waypoint x="1130" y="732" />
+        <di:waypoint x="1130" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13pa53j_di" bpmnElement="Flow_13pa53j">
+        <di:waypoint x="2860" y="347" />
+        <di:waypoint x="2932" y="347" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aqysug_di" bpmnElement="Flow_0aqysug">
+        <di:waypoint x="2860" y="190" />
+        <di:waypoint x="2932" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0edkxw2_di" bpmnElement="Flow_0edkxw2">
+        <di:waypoint x="2708" y="347" />
+        <di:waypoint x="2760" y="347" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1l1mv6x_di" bpmnElement="Flow_1l1mv6x">
+        <di:waypoint x="2708" y="190" />
+        <di:waypoint x="2760" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0y79n71_di" bpmnElement="Flow_0y79n71">
+        <di:waypoint x="2530" y="560" />
+        <di:waypoint x="2575" y="560" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_04qyp74_di" bpmnElement="Flow_04qyp74">
         <di:waypoint x="3560" y="560" />
         <di:waypoint x="3632" y="560" />
@@ -422,30 +476,6 @@
         <di:waypoint x="260" y="358" />
         <di:waypoint x="260" y="560" />
         <di:waypoint x="380" y="560" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0y79n71_di" bpmnElement="Flow_0y79n71">
-        <di:waypoint x="2530" y="560" />
-        <di:waypoint x="2575" y="560" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1l1mv6x_di" bpmnElement="Flow_1l1mv6x">
-        <di:waypoint x="2708" y="190" />
-        <di:waypoint x="2760" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0edkxw2_di" bpmnElement="Flow_0edkxw2">
-        <di:waypoint x="2708" y="347" />
-        <di:waypoint x="2760" y="347" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0aqysug_di" bpmnElement="Flow_0aqysug">
-        <di:waypoint x="2860" y="190" />
-        <di:waypoint x="2932" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13pa53j_di" bpmnElement="Flow_13pa53j">
-        <di:waypoint x="2860" y="347" />
-        <di:waypoint x="2932" y="347" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_010tcks_di" bpmnElement="Flow_010tcks">
-        <di:waypoint x="1130" y="732" />
-        <di:waypoint x="1130" y="600" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_10l78tv_di" bpmnElement="Event_10l78tv">
         <dc:Bounds x="902" y="329" width="36" height="36" />
