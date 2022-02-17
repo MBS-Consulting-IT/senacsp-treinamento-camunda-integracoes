@@ -33,4 +33,10 @@ npx json-server --watch db/api.json --delay 1000
 - [ ] Implementar nova tarefa de serviço para etapa de aprovação da migração
 
 ### Exercício 5
-...
+- [ ] Passar os formulários nativos para formulários embedados
+- [ ] Envio de emails com Power Automate
+- [ ] Uso de AngularJS nos formulários externos
+- [ ] Criação de tasks no Planner com Power Automate
+- [ ] Uso de Service Tasks com implementação de Workers
+- [ ] Uso de gateway baseado em eventos para definição de prazo máximo
+- [ ] Uso de subprocesso baseado em eventos para report quinzenal
