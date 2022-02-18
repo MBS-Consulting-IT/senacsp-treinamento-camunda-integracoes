@@ -1,0 +1,63 @@
+<form class="form-horizontal">
+  <div>
+    <input type="hidden" cam-variable-name="observacoes">
+    <input type="hidden" cam-variable-name="nomeProjeto">
+    <input type="hidden" cam-variable-name="numeroEpm">
+  </div>
+
+  <script cam-script type="text/form-script">
+    camForm.on('form-loaded', () => {
+      camForm.variableManager.fetchVariable('sistemas')
+    })
+
+    camForm.on('variables-fetched', () => {
+      $scope.sistemas = camForm.variableManager.variableValue('sistemas')
+    })
+  </script>
+
+  <div class="form-group">
+    <label class="col-sm-3">Número no EPM:</label>
+    <div class="col-sm-9">
+      {{numeroEpm}}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3">Nome do Projeto:</label>
+    <div class="col-sm-9">
+      {{nomeProjeto}}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3">Observações:</label>
+    <div class="col-sm-9">
+      {{observacoes}}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3">Documento de Histórias:</label>
+    <a class="col-sm-9" cam-file-download="documentoHistorias"></a>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3">Sistemas Envolvidos:</label>
+    <div class="col-sm-9">
+      <div ng-repeat="sistema in sistemas track by $index">
+        {{sistema}}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3">Projeto Aprovado?</label>
+    <div class="col-sm-9">
+      <input  type="checkbox"
+      cam-variable-name="isProjetoAprovado"
+      cam-variable-type="Boolean"
+      class="form-control" />
+    </div>
+  </div>
+
+</form>
